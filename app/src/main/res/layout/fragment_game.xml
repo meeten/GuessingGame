@@ -19,15 +19,13 @@
         android:id="@+id/count_lives"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/count_lives"
-        android:textSize="16sp" />
+        android:textSize="17sp" />
 
     <TextView
         android:id="@+id/letters_used"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/letters_used"
-        android:textSize="16sp" />
+        android:textSize="17sp" />
 
     <EditText
         android:id="@+id/guess"
