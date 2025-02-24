@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">GuessingGame</string>
-
     <string name="hint_edit_text">Введите букву</string>
     <string name="check">ПРОВЕРИТЬ</string>
     <string name="new_game">НАЧАТЬ НОВУЮ ИГРУ</string>

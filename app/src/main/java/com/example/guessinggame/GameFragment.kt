@@ -84,7 +84,7 @@ class GameFragment : Fragment() {
                 correctLetters += letter
                 secretWordDisplay = deriveSecretWord()
             } else{
-                incorrectLetters += letter
+                incorrectLetters += " $letter"
                 countLives -= 1
             }
         }
