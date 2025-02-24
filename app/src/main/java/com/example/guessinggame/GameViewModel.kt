@@ -1,17 +1,28 @@
 package com.example.guessinggame
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class GameViewModel : ViewModel() {
     private val secretWords = listOf("Android", "Activity", "Fragment")
     private val secretWord = secretWords.random().uppercase()
     private var correctLetters = ""
-    var incorrectLetters = ""
-    var countLives = 8
-    var secretWordDisplay = ""
+
+    private var _secretWordDisplay = MutableLiveData<String>()
+    val secretWordDisplay: LiveData<String> get() = _secretWordDisplay
+
+    private var _countLives = MutableLiveData(8)
+    val countLives: LiveData<Int> get() = _countLives
+
+    private var _incorrectLetters = MutableLiveData("")
+    val incorrectLetters: LiveData<String> get() = _incorrectLetters
+
+    private val _gameOver = MutableLiveData(false)
+    val gameOver: LiveData<Boolean> get() = _gameOver
 
     init {
-        secretWordDisplay = deriveSecretWord()
+        _secretWordDisplay.value = deriveSecretWord()
     }
 
     private fun deriveSecretWord(): String {
@@ -30,24 +41,24 @@ class GameViewModel : ViewModel() {
         if (letter.length == 1) {
             if (secretWord.contains(letter)) {
                 correctLetters += letter
-                secretWordDisplay = deriveSecretWord()
+                _secretWordDisplay.value = deriveSecretWord()
             } else {
-                incorrectLetters += letter
-                countLives -= 1
+                _incorrectLetters.value += letter
+                _countLives.value = _countLives.value?.minus(1)
             }
+            if (isWon() || isLost()) _gameOver.value = true
         }
     }
 
+    private fun isWon(): Boolean {
+        return secretWord.equals(_secretWordDisplay.value, true)
+    }
+    private fun isLost(): Boolean {
+        return (_countLives.value ?: 0) <= 0
+    }
     fun wonLostMessage(): String {
         return if (isWon()) "Вы выиграли. Отгданное слово $secretWord" else "Вы проиграли. Загаданное слово $secretWord"
     }
 
-    fun isWon(): Boolean {
-        return secretWord.equals(secretWordDisplay, true)
-    }
-
-    fun isLos(): Boolean {
-        return countLives <= 0
-    }
 
 }
