@@ -18,6 +18,9 @@ class GameViewModel : ViewModel() {
     private var _incorrectLetters = MutableLiveData("")
     val incorrectLetters: LiveData<String> get() = _incorrectLetters
 
+    private val _gameOver = MutableLiveData(false)
+    val gameOver: LiveData<Boolean> get() = _gameOver
+
     init {
         _secretWordDisplay.value = deriveSecretWord()
     }
@@ -43,19 +46,19 @@ class GameViewModel : ViewModel() {
                 _incorrectLetters.value += letter
                 _countLives.value = _countLives.value?.minus(1)
             }
+            if (isWon() || isLost()) _gameOver.value = true
         }
     }
 
+    private fun isWon(): Boolean {
+        return secretWord.equals(_secretWordDisplay.value, true)
+    }
+    private fun isLost(): Boolean {
+        return (_countLives.value ?: 0) <= 0
+    }
     fun wonLostMessage(): String {
         return if (isWon()) "Вы выиграли. Отгданное слово $secretWord" else "Вы проиграли. Загаданное слово $secretWord"
     }
 
-    fun isWon(): Boolean {
-        return secretWord.equals(_secretWordDisplay.value, true)
-    }
-
-    fun isLos(): Boolean {
-        return (_countLives.value ?: 0) <= 0
-    }
 
 }
