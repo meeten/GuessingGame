@@ -38,18 +38,17 @@ class GameFragment : Fragment() {
         gameViewModel.incorrectLetters.observe(viewLifecycleOwner) { newValue ->
             binding.lettersUsed.text = "Использованные буквы: $newValue"
         }
+        gameViewModel.gameOver.observe(viewLifecycleOwner) { newValue ->
+            if (newValue) {
+                val action =
+                    GameFragmentDirections.actionGameFragmentToResultFragment(gameViewModel.wonLostMessage())
+                view.findNavController().navigate(action)
+            }
+        }
 
         binding.checkButton.setOnClickListener {
             gameViewModel.makeGuess(binding.guess.text.toString().uppercase())
             binding.guess.text = null
-
-            gameViewModel.gameOver.observe(viewLifecycleOwner) { newValue ->
-                if (newValue) {
-                    val action =
-                        GameFragmentDirections.actionGameFragmentToResultFragment(gameViewModel.wonLostMessage())
-                    view.findNavController().navigate(action)
-                }
-            }
         }
 
         return view

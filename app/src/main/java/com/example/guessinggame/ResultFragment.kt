@@ -27,8 +27,7 @@ class ResultFragment : Fragment() {
         resultViewModelFactory = ResultViewModelFactory(result)
         resultViewModel =
             ViewModelProvider(this, resultViewModelFactory)[ResultViewModel::class.java]
-
-        binding.result.text = resultViewModel.result
+        binding.resultViewModel = resultViewModel
 
         binding.restartButton.setOnClickListener {
             view.findNavController().navigate(R.id.action_resultFragment_to_gameFragment)
@@ -40,5 +39,4 @@ class ResultFragment : Fragment() {
         _binding = null
         super.onDestroy()
     }
-
 }
